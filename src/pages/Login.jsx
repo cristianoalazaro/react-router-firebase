@@ -3,33 +3,48 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../config/firebase";
 import { useUserContext } from "../context/UserContext";
 import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
+import { Formik } from "formik";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
     const { user } = useUserContext();
 
     useRedirectActiveUser(user, '/dashboard');
 
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        try {
-            const credentialUser = await login({ email, password });
-            console.log(credentialUser);
-        } catch(e) {
-            console.log(e);
-        };
-    }
-
     return (
         <>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Insira seu e-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <input type="password" placeholder="Insira sua senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
-            <button type="submit">Login</button>
-        </form>
+            <h1>Login</h1>
+            <Formik
+                initialValues={{ email: '', password: '' }}
+                onSubmit={async ({ email, password }) => {
+                    try {
+                        const credentialUser = await login({email, password});
+                        console.log(credentialUser);
+                    }catch(e) {
+                        console.log(e);
+                    }
+                }}
+            >
+                {({ values, handleSubmit, handleChange }) => (
+                    <form onSubmit={handleSubmit}>
+                        <input 
+                            type="email"
+                            name="email" 
+                            placeholder="Insira seu e-mail" 
+                            value={values.email} 
+                            onChange={handleChange} 
+                        />
+                        <input 
+                            type="password" 
+                            name="password"
+                            placeholder="Insira sua senha" 
+                            value={values.password} 
+                            onChange={handleChange} 
+                        />
+                        <button type="submit">Login</button>
+                    </form>
+                )}
+
+            </Formik>
         </>
     )
 };
