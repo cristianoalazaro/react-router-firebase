@@ -5,6 +5,8 @@ import { useUserContext } from "../context/UserContext";
 import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
 import { Formik } from "formik";
 import * as yup from 'yup';
+import { Avatar, Box, Typography } from "@mui/material";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 const validationSchema = yup.object({
     email: yup
@@ -24,8 +26,14 @@ const Login = () => {
     useRedirectActiveUser(user, '/dashboard');
 
     return (
-        <>
-            <h1>Login</h1>
+        <Box sx={{mt: 8, maxWidth: "400px", mx: "auto", textAlign: "center"}}>
+
+            <Avatar sx={{mx: "auto", bgcolor: "#444"}}>
+                <AddAPhotoIcon />
+            </Avatar>
+
+            <Typography variant="h5" component="h1">Login</Typography>
+
             <Formik
                 initialValues={{ email: '', password: '' }}
                 validationSchema={validationSchema}
@@ -57,7 +65,7 @@ const Login = () => {
                         />
                         {errors.email && touched && errors.email}
                         <input 
-                            type="text" 
+                            type="password" 
                             name="password"
                             placeholder="Insira sua senha" 
                             value={values.password} 
@@ -70,7 +78,7 @@ const Login = () => {
                 )}
 
             </Formik>
-        </>
+        </Box>
     )
 };
 

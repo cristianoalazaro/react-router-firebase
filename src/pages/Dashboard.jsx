@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { logout } from "../config/firebase";
 import { useUserContext } from "../context/UserContext";
 
@@ -12,7 +13,7 @@ const Dashboard = () => {
         <>
         <h1>Dashboard</h1>
         <h2>Bem-vindo: {user.email}</h2>
-        <button onClick={handleLogout}>Logout</button>
+        <Button onClick={handleLogout} variant="contained">Logout</Button>
         </>
     );
 };
