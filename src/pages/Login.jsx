@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../config/firebase";
 import { useUserContext } from "../context/UserContext";
 import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
 import { Formik } from "formik";
 import * as yup from 'yup';
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import { LoadingButton } from "@mui/lab";
 
 const validationSchema = yup.object({
     email: yup
@@ -54,27 +55,61 @@ const Login = () => {
                 }}
             >
                 {({ values, handleSubmit, handleChange, errors, touched, handleBlur, isSubmitting }) => (
-                    <form onSubmit={handleSubmit}>
-                        <input 
+                    <Box 
+                        onSubmit={handleSubmit}
+                        sx={{mt: 1}}
+                        component='form'
+                    >
+                        <TextField 
                             type="text"
                             name="email" 
-                            placeholder="Insira seu e-mail" 
+                            placeholder="email@exemplo.com" 
                             value={values.email} 
                             onChange={handleChange} 
-                            onBlur={handleBlur}
-                        />
-                        {errors.email && touched && errors.email}
-                        <input 
+                            onBlur={handleBlur}    
+                            id="email"
+                            label="Entre com seu e-mail"  
+                            fullWidth   
+                            sx={{mb: 3}}    
+                            error={errors.email && touched}   
+                            helperText={errors.email && touched && errors.email}        
+                            />
+                        {/*errors.email && touched && errors.email*/}
+                        <TextField 
                             type="password" 
                             name="password"
-                            placeholder="Insira sua senha" 
+                            placeholder="******" 
                             value={values.password} 
                             onChange={handleChange} 
                             onBlur={handleBlur}
+                            id="password"
+                            label="Entre com sua senha"  
+                            fullWidth                  
+                            sx={{mb: 3}}               
+                            error={errors.password && touched.password}   
+                            helperText={errors.password && touched.password && errors.password}        
                         />
-                        {errors.password && touched && errors.password}
-                        <button type="submit" disabled={isSubmitting}>Login</button>
-                    </form>
+                        {/*errors.password && touched && errors.password*/}
+
+                        <LoadingButton
+                            type="submit" 
+                            disabled={isSubmitting}
+                            loading={isSubmitting}
+                            variant="contained"
+                            fullWidth
+                            sx={{mb: 3}}
+                        >
+                            Acessar
+                        </LoadingButton>
+
+                        <Button
+                            fullWidth
+                            component={Link}
+                            to="/register"
+                        >
+                            Não tem conta? Registre-se
+                        </Button>
+                    </Box>
                 )}
 
             </Formik>
